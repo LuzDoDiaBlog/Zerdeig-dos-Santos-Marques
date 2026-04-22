@@ -14,7 +14,7 @@ export default function Footer() {
               <div className="bg-indigo-600 p-1.5 rounded-lg text-white">
                 <Sun size={24} />
               </div>
-              <span className="text-xl font-bold text-white">Luz Diária</span>
+              <span className="text-xl font-bold text-white">Luz do Dia</span>
             </div>
             <p className="text-slate-400 leading-relaxed mb-8">
               Nossa missão é levar uma palavra de conforto, esperança e fé para o seu dia a dia através de mensagens inspiradoras.
@@ -60,14 +60,14 @@ export default function Footer() {
             <p className="text-slate-400 mb-4">
               Dúvidas ou sugestões? Entre em contato conosco.
             </p>
-            <a href="mailto:contato@luzdiaria.com" className="text-indigo-400 font-medium hover:underline">
-              contato@luzdiaria.com
+            <a href="mailto:contato@luzdodia.com" className="text-indigo-400 font-medium hover:underline">
+              contato@luzdodia.com
             </a>
           </div>
         </div>
 
         <div className="pt-10 border-t border-slate-800 text-center text-sm text-slate-500">
-          <p>© {new Date().getFullYear()} Luz Diária. Todos os direitos reservados.</p>
+          <p>© {new Date().getFullYear()} Luz do Dia (Anônimo). Todos os direitos reservados.</p>
         </div>
       </div>
 

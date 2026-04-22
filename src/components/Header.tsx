@@ -22,7 +22,7 @@ export default function Header() {
               <Sun size={24} />
             </div>
             <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600">
-              Luz Diária
+              Luz do Dia
             </span>
           </div>
 
