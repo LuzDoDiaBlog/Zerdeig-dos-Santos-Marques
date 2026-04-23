@@ -69,10 +69,20 @@ export async function getDailyLiturgy(date: string) {
     });
     
     const text = response.text || '{}';
-    return JSON.parse(text);
+    return JSON.parse(text.replace(/```json\n?|\n?```/g, ''));
   } catch (error) {
     console.error('Error fetching daily liturgy:', error);
-    return null;
+    // Fallback liturgia básica para não deixar o usuário sem nada
+    return {
+      title: "Tempo Comum",
+      color: "Verde",
+      colorHex: "#22c55e",
+      saint: "Santos do Dia",
+      firstReading: { reference: "Leitura do Dia", text: "A palavra do Senhor é luz para os nossos caminhos. Que possamos meditar em Seus ensinamentos e praticar a caridade em todos os momentos de nossa jornada." },
+      psalm: { reference: "Sl 23", text: "O Senhor é o meu pastor, nada me faltará. Em verdes pastagens me faz repousar." },
+      gospel: { reference: "Evangelho do Dia", text: "Jesus nos convida a amar o próximo como a nós mesmos, sendo sal da terra e luz do mundo em cada gesto de bondade." },
+      reflection: "Neste dia, somos convidados a silenciar o coração e escutar a voz de Deus que nos chama à esperança e à renovação espiritual."
+    };
   }
 }
 
