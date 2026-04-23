@@ -1,10 +1,21 @@
 import { GoogleGenAI, Type } from "@google/genai";
 
-const apiKey = (typeof process !== 'undefined' && process.env?.GEMINI_API_KEY) || (import.meta as any).env?.VITE_GEMINI_API_KEY || '';
-const ai = new GoogleGenAI({ apiKey });
+let aiInstance: GoogleGenAI | null = null;
+
+const getAi = () => {
+  if (aiInstance) return aiInstance;
+  
+  const apiKey = (typeof process !== 'undefined' && process.env?.GEMINI_API_KEY) || 
+                 (import.meta as any).env?.VITE_GEMINI_API_KEY || 
+                 '';
+                 
+  aiInstance = new GoogleGenAI({ apiKey });
+  return aiInstance;
+};
 
 export async function getDailyLiturgy(date: string) {
   try {
+    const ai = getAi();
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
       contents: `For the date ${date}, provide the Catholic Daily Liturgy information in Portuguese. 
@@ -59,6 +70,7 @@ export async function getDailyLiturgy(date: string) {
 
 export async function generatePrayer(theme: string = 'paz e esperança') {
   try {
+    const ai = getAi();
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
       contents: `Escreva uma oração curta, inspiradora e poética (máximo 300 caracteres) com o tema específico: "${theme}". 

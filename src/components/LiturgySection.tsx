@@ -167,17 +167,23 @@ export default function LiturgySection() {
 
   const fetchLiturgy = async (date: Date) => {
     setIsLoading(true);
-    const dateStr = format(date, 'yyyy-MM-dd');
-    const data = await getDailyLiturgy(dateStr);
-    setLiturgy(data);
-    setIsLoading(false);
-    
-    // Carregar comentários locais para esta data
-    const savedComments = localStorage.getItem(`liturgy_comments_${dateStr}`);
-    if (savedComments) {
-      setComments(JSON.parse(savedComments));
-    } else {
-      setComments([]);
+    try {
+      const dateStr = format(date, 'yyyy-MM-dd');
+      const data = await getDailyLiturgy(dateStr);
+      setLiturgy(data);
+      
+      // Carregar comentários locais para esta data
+      const savedComments = localStorage.getItem(`liturgy_comments_${dateStr}`);
+      if (savedComments) {
+        setComments(JSON.parse(savedComments));
+      } else {
+        setComments([]);
+      }
+    } catch (error) {
+      console.error('Error fetching liturgy:', error);
+      setLiturgy(null);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -288,10 +294,10 @@ export default function LiturgySection() {
           <div className="relative">
             <button 
               onClick={toggleCalendar}
-              className="flex items-center gap-3 bg-white px-6 py-3 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md hover:border-indigo-200 transition-all"
+              className="flex items-center gap-3 bg-white px-8 py-4 rounded-2xl shadow-md border-2 border-indigo-100 hover:shadow-lg hover:border-indigo-400 transition-all active:scale-95 group"
             >
-              <CalendarIcon size={20} className="text-indigo-600" />
-              <span className="text-lg font-bold text-slate-700 capitalize">
+              <CalendarIcon size={24} className="text-indigo-600 group-hover:scale-110 transition-transform" />
+              <span className="text-xl font-bold text-slate-800 capitalize">
                 {format(selectedDate, "EEEE, dd 'de' MMMM", { locale: ptBR })}
               </span>
             </button>
