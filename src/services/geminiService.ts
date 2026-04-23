@@ -5,19 +5,27 @@ let aiInstance: GoogleGenAI | null = null;
 const getAi = () => {
   if (aiInstance) return aiInstance;
   
-  const apiKey = (typeof process !== 'undefined' && process.env?.GEMINI_API_KEY) || 
-                 (import.meta as any).env?.VITE_GEMINI_API_KEY || 
+  // Try all possible ways to get the key in different environments
+  const apiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || 
+                 (typeof process !== 'undefined' && process.env?.GEMINI_API_KEY) || 
+                 (typeof process !== 'undefined' && process.env?.VITE_GEMINI_API_KEY) ||
                  '';
+                 
+  if (!apiKey) {
+    console.warn('GEMINI_API_KEY not found. Some features will be limited.');
+  }
                  
   aiInstance = new GoogleGenAI({ apiKey });
   return aiInstance;
 };
 
+const DEFAULT_MODEL = "gemini-2.0-flash-exp"; // Stable and highly available model
+
 export async function getDailyLiturgy(date: string) {
   try {
     const ai = getAi();
     const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
+      model: DEFAULT_MODEL,
       contents: `For the date ${date}, provide the Catholic Daily Liturgy information in Portuguese. 
       Ensure the information is accurate according to the Roman Catholic Liturgical Calendar.`,
       config: {
@@ -72,7 +80,7 @@ export async function generatePrayer(theme: string = 'paz e esperança') {
   try {
     const ai = getAi();
     const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
+      model: DEFAULT_MODEL,
       contents: `Escreva uma oração curta, inspiradora e poética (máximo 300 caracteres) com o tema específico: "${theme}". 
       Além da oração, forneça uma pequena reflexão (máximo 200 caracteres) que aprofunde o significado do tema escolhido.
       A oração e a reflexão devem ser acolhedoras, universais e trazer conforto espiritual.`,
